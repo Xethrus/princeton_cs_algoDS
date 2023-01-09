@@ -12,16 +12,16 @@ class UnionFind {
       id[i-1] = i;
     }
   }
-  void union(int, int);
+  void bindUnion(int, int);
   bool connected(int, int);
   int find(int);
 };
 
-void UnionFind::union(int p, int q) {
+void UnionFind::bindUnion(int p, int q) {
   if(id[p] == id[q]) {
     return;
   }
-  for(int i = 0; i < id.size(); i++) {
+  for(int i = 0; i < ARRAY_SIZE; i++) {
     if(id[i] == id[q]) {
       int connection = id[p];
       id[i] = connection;
