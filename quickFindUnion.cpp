@@ -15,7 +15,6 @@ class UnionFind {
   void union(int, int);
   bool connected(int, int);
   int find(int);
-  int count();
 };
 
 void UnionFind::union(int p, int q) {
@@ -32,13 +31,18 @@ void UnionFind::union(int p, int q) {
   id[q] = connection;
 }
 bool UnionFind::connected(int p, int q) {
-  return false;
+  if(id[p] == id[q]) {
+    return true;
+  } else {
+    return false;
+  }
 }
 int UnionFind::find(int p) {
-  return 1;
-}
-int UnionFind::count() {
-  return 1;
+  for(int i = 0; i < ARRAY_SIZE; i++) {
+    if(array[i] == p) {
+      return id[i];
+    }
+  }
 }
 
 
