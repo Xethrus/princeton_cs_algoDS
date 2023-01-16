@@ -1,15 +1,18 @@
 #include "union_find.h"
 #include "node.h"
 #include <iostream>
+#include <vector>
 
 class Percolation {
 public:
+  std::vector<std::vector<Node*>> nodeArray;
+  QuickFindUF* checker;
   Percolation(int n) {
-    union_find::QuickFindUF* checker = new QuickFindUF(n);
-    //the idea i am workin on right now does not account for the full path, it will jump over in between nodes if wanted node gets swapped lol
+    checker = new QuickFindUF(n);
     int fullSize = n * n;
-    array = new Node*[n][n];
+    nodeArray.resize(n);
     for(int i = 0; i < n; i++) {
+      nodeArray[i].resize(n);
       for(int j = 0; j < n; i++) {
         Node* newNode = new Node();
         nodeArray[i][j] = newNode;
@@ -34,16 +37,16 @@ void Percolation::open(int x, int y) {
     current->isOpen = true;
   }
   if(up->isOpen) {
-    checker.union_find::unioner(up->xyCord.first,up->xyCord.second);
+    this->checker->unioner(up->xyCord.first,up->xyCord.second);
   }
   if(down->isOpen) {
-    checker.union_find::unioner(down->xyCord.first,down->xyCord.second);
+    this->checker->unioner(down->xyCord.first,down->xyCord.second);
   }
   if(right->isOpen) {
-    checker.union_find::unioner(right->xyCord.first,right->xyCord.second);
+    this->checker->unioner(right->xyCord.first,right->xyCord.second);
   }
   if(left->isOpen) {
-    checker.union_find::unioner(left->xyCord.first,left->xyCord.second);
+    this->checker->unioner(left->xyCord.first,left->xyCord.second);
   }
 }
 
