@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <random>
 
 class Percolation {
 public:
@@ -26,13 +27,13 @@ public:
         newNode->xyCord = std::make_pair(i,j);  
         if(j == 0) {
           topNodes.push_back(newNode);
-          std::cout << newNode->xyCord.first << " and " <<
-            newNode->xyCord.second << std::endl;
+          //std::cout << newNode->xyCord.first << " and " <<
+          //  newNode->xyCord.second << std::endl;
         }
         if(j == n-1) {
           bottomNodes.push_back(newNode);
-          std::cout << newNode->xyCord.first << " and " <<
-            newNode->xyCord.second << std::endl;
+          //std::cout << newNode->xyCord.first << " and " <<
+          //  newNode->xyCord.second << std::endl;
         }
         count++;
         newNode->number = count;
@@ -55,6 +56,7 @@ public:
 };
 //test
 void Percolation::testIdArray() {
+  this->checker->printid();
   int fullSize = gridSize * gridSize;
   std::cout << "--------------------" << std::endl;
   std::cout << "id array test" << std::endl;
@@ -159,7 +161,7 @@ void Percolation::open(int x, int y) {
   }
   if(up) {
     if(up->isOpen) {
-     this->checker->unioner(up->xyCord.first,up->xyCord.second);
+      this->checker->unioner(up->xyCord.first,up->xyCord.second);
     }
   }
   if(down) {
@@ -169,7 +171,7 @@ void Percolation::open(int x, int y) {
   }
   if(right) {
     if(right->isOpen) {
-     this->checker->unioner(right->xyCord.first,right->xyCord.second);
+      this->checker->unioner(right->xyCord.first,right->xyCord.second);
     }
   }
   if(left) {
@@ -220,8 +222,10 @@ bool Percolation::percolates() {
   return false;
 }
 bool chance(float percent) {
-  int randNum = rand() % 100;
-  return randNum <= percent * 100;
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_int_distribution<> dis(0,1);
+  return dis(gen) <= percent;
 }
 void Percolation::nodeOpenChance(float percent) {
   for(int i = 0; i < this->gridSize; i++) {
@@ -234,7 +238,7 @@ void Percolation::nodeOpenChance(float percent) {
 }
 
 int main() {
-  Percolation test(5);
+  Percolation test(10);
   /*
   test.testPrintCords(0,0);
   test.testPrintCords(0,1);
@@ -246,13 +250,13 @@ int main() {
   test.open(0,3);
   test.open(0,4);
   */
-  test.nodeOpenChance(0.70);
-  test.testOpenSitesCount();
-  test.testPrintOpenSiteNum();
-  test.testPrintGrid();
-  test.percolates();
+  test.nodeOpenChance(0.91);
+  //test.testOpenSitesCount();
+  //test.testPrintOpenSiteNum();
+  //test.testPrintGrid();
+  //test.percolates();
   test.testIdArray();
-  test.testNodeArrayTopAndBottom();
+  //test.testNodeArrayTopAndBottom();
   
   
   return 0;

@@ -17,6 +17,7 @@ public:
 
   bool connected(int,int);
   void unioner(int,int);
+  void printid();
 };
 
 bool QuickFindUF::connected(int p, int q) {
@@ -35,3 +36,10 @@ void QuickFindUF::unioner(int p, int q) {
   return;
 }
 
+void QuickFindUF::printid() {
+  std::cout << "print id array" << std::endl;
+  std::cout << "array size = " << arraySize << std::endl;
+  for(int i = 0; i < arraySize; i++) {
+    std::cout << id[i] << std::endl;
+  }
+}
