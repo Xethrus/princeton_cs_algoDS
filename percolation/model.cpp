@@ -20,22 +20,23 @@ public:
 
     gridSize = n;
     int count = 0;
-    for(int i = 0; i < n; i++) {
-      for(int j = 0; j < n; j++) {
+    for(int y = 0; y < n; y++) {
+      for(int x = 0; x < n; x++) {
         Node* newNode = new Node();
-        nodeArray[i][j] = newNode;
-        newNode->xyCord = std::make_pair(i,j);  
-        if(j == 0) {
+        nodeArray[x][y] = newNode;
+        newNode->xyCord = std::make_pair(x,y);  
+        if(x == 0) {
           topNodes.push_back(newNode);
           //std::cout << newNode->xyCord.first << " and " <<
           //  newNode->xyCord.second << std::endl;
         }
-        if(j == n-1) {
+        if(y == n-1) {
           bottomNodes.push_back(newNode);
           //std::cout << newNode->xyCord.first << " and " <<
           //  newNode->xyCord.second << std::endl;
         }
         count++;
+        std::cout << count << std::endl;
         newNode->number = count;
       }
     }
@@ -56,7 +57,6 @@ public:
 };
 //test
 void Percolation::testIdArray() {
-  this->checker->printid();
   int fullSize = gridSize * gridSize;
   std::cout << "--------------------" << std::endl;
   std::cout << "id array test" << std::endl;
@@ -101,11 +101,11 @@ void Percolation::testOpenSitesCount() {
 }
 void Percolation::testPrintOpenSiteNum() {
   std::vector<int> numbersThatAreOpen;
-  for(int i = 0; i < gridSize; i++) {
-    for(int j = 0; j < gridSize; j++) {
-      if(this->nodeArray[i][j]->isOpen) {
+  for(int y = 0; y < gridSize; y++) {
+    for(int x = 0; x < gridSize; x++) {
+      if(this->nodeArray[x][y]->isOpen) {
         numbersThatAreOpen.push_back(this->
-          nodeArray[i][j]->number);
+          nodeArray[x][y]->number);
       }
     }
   }
@@ -118,11 +118,11 @@ void Percolation::testPrintOpenSiteNum() {
   std::cout << "----------------" << std::endl;
 }
 void Percolation::testPrintGrid() {
-  for(int i = 0; i < gridSize; i++) {
+  for(int y = 0; y < gridSize; y++) {
     std::cout << std::endl;
-    for(int j = 0; j < gridSize; j++) {
+    for(int x = 0; x < gridSize; x++) {
       std::cout << 
-        this->nodeArray[i][j]->number
+        this->nodeArray[x][y]->number
         << " ";
     }
   }
@@ -203,16 +203,16 @@ int Percolation::openSites() {
 
 bool Percolation::percolates() {
   int sizeOfCurrent = this->checker->arraySize;
-  for(int i = 0; i < this->topNodes.size(); i++) {
-    for(int j = 0; j < this->bottomNodes.size(); j++) {
+  for(int y = 0; y < this->topNodes.size(); y++) {
+    for(int x = 0; x < this->bottomNodes.size(); x++) {
       std::cout << "top Node id: ";
-      std::cout << this->checker->id[this->topNodes[i]->
+      std::cout << this->checker->id[this->topNodes[y]->
           number] << std::endl;
       std::cout << "bottom Node id: ";
-      std::cout << this->checker->id[this->bottomNodes[j]->
+      std::cout << this->checker->id[this->bottomNodes[x]->
           number] << std::endl;
-      if(this->checker->id[this->topNodes[i]->number] ==
-         this->checker->id[this->bottomNodes[j]->number]) {
+      if(this->checker->id[this->topNodes[y]->number] ==
+         this->checker->id[this->bottomNodes[x]->number]) {
         std::cout << "yay" << std::endl;
         return true;
       }
@@ -228,36 +228,25 @@ bool chance(float percent) {
   return dis(gen) <= percent;
 }
 void Percolation::nodeOpenChance(float percent) {
-  for(int i = 0; i < this->gridSize; i++) {
-    for(int j = 0; j < this->gridSize; j++) {
+  for(int y = 0; y < this->gridSize; y++) {
+    for(int x = 0; x < this->gridSize; x++) {
       if(chance(percent)) {
-        this->open(i,j);
+        std::cout << "opening node" <<
+          this->nodeArray[x][y]->number <<
+          std::endl;
+        this->open(x,y);
       }
     }
   }
 }
 
 int main() {
-  Percolation test(10);
-  /*
-  test.testPrintCords(0,0);
-  test.testPrintCords(0,1);
-  test.testPrintCords(0,2);
-  test.testPrintCords(0,4);
-  test.open(0,0);
-  test.open(0,1);
-  test.open(0,2);
-  test.open(0,3);
-  test.open(0,4);
-  */
-  test.nodeOpenChance(0.91);
-  //test.testOpenSitesCount();
-  //test.testPrintOpenSiteNum();
-  //test.testPrintGrid();
-  //test.percolates();
+  Percolation test(5);
+  test.testPrintOpenSiteNum();
+  test.nodeOpenChance(.70);
+  test.testPrintOpenSiteNum();
+  test.testPrintGrid();
   test.testIdArray();
-  //test.testNodeArrayTopAndBottom();
-  
-  
+  test.percolates();
   return 0;
 }
