@@ -18,12 +18,7 @@ public:
     checker = new QuickFindUF(n * n);
 
     gridSize = n;
-    //i currently am numbering nodes wrong 
-    //01234 -> 01234
-    //12345 -> 56789
-    //23456 -> etc  etc
-    //34567 ->
-    //45678 ->
+    int count = 0;
     for(int i = 0; i < n; i++) {
       for(int j = 0; j < n; j++) {
         Node* newNode = new Node();
@@ -39,7 +34,8 @@ public:
           std::cout << newNode->xyCord.first << " and " <<
             newNode->xyCord.second << std::endl;
         }
-        newNode->number = i + j;
+        count++;
+        newNode->number = count;
       }
     }
   }
