@@ -14,9 +14,16 @@ public:
   Percolation(int n) {
     std::vector<std::vector<Node*>> newArray(n, std::vector<Node*>(n));
     nodeArray = newArray;
-    checker = new QuickFindUF(n);
+    
+    checker = new QuickFindUF(n * n);
 
     gridSize = n;
+    //i currently am numbering nodes wrong 
+    //01234 -> 01234
+    //12345 -> 56789
+    //23456 -> etc  etc
+    //34567 ->
+    //45678 ->
     for(int i = 0; i < n; i++) {
       for(int j = 0; j < n; j++) {
         Node* newNode = new Node();
@@ -32,6 +39,7 @@ public:
           std::cout << newNode->xyCord.first << " and " <<
             newNode->xyCord.second << std::endl;
         }
+        newNode->number = i + j;
       }
     }
   }
@@ -40,7 +48,19 @@ public:
   bool isOpen(int, int);
   int openSites();
   bool percolates();
+  //test funcs
+  void testIdArray();
 };
+//test
+void Percolation::testIdArray() {
+  int fullSize = gridSize * gridSize;
+  std::cout << "id array test" << std::endl;
+  for(int i = 0; i < fullSize; i++) {
+    std::cout << this->checker->id[i] << std::endl;
+  }
+  std::cout << "id array test concluded" << std::endl;
+}
+//
 
 void Percolation::open(int x, int y) {
   Node* current = this->nodeArray[x][y];
@@ -92,6 +112,12 @@ bool Percolation::percolates() {
   int sizeOfCurrent = this->checker->arraySize;
   for(int i = 0; i < this->topNodes.size(); i++) {
     for(int j = 0; j < this->bottomNodes.size(); j++) {
+      std::cout << "top Node id: ";
+      std::cout << this->checker->id[this->topNodes[i]->
+          number] << std::endl;
+      std::cout << "bottom Node id: ";
+      std::cout << this->checker->id[this->bottomNodes[j]->
+          number] << std::endl;
       if(this->checker->id[this->topNodes[i]->number] ==
          this->checker->id[this->bottomNodes[j]->number]) {
         std::cout << "yay" << std::endl;
@@ -105,6 +131,8 @@ bool Percolation::percolates() {
 
 int main() {
   Percolation test(5);
+  test.percolates();
+  test.testIdArray();
   
   return 0;
 }
