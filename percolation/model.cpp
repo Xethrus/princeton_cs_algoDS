@@ -35,9 +35,8 @@ public:
           //std::cout << newNode->xyCord.first << " and " <<
           //  newNode->xyCord.second << std::endl;
         }
-        count++;
-        std::cout << count << std::endl;
         newNode->number = count;
+        count++;
       }
     }
   }
@@ -54,6 +53,7 @@ public:
   void testOpenSitesCount();
   void testPrintOpenSiteNum();
   void testPrintGrid();
+  void testNumberIdPair();
 };
 //test
 void Percolation::testIdArray() {
@@ -127,10 +127,39 @@ void Percolation::testPrintGrid() {
     }
   }
 }
-//
+void Percolation::testNumberIdPair() {
+  std::cout << "testing id - number pair" << std::endl;
+  for(int y = 0; y < this->gridSize; y++) {
+    for(int x = 0; x < this->gridSize; x++) {
+      std::cout << "_number below_"<< std::endl;
+      std::cout << this->nodeArray[x][y]->number << std::endl;
+      std::cout << "_id below_"<< std::endl;
+      int index = y * this->gridSize + x;
+      std::cout << this->checker->id[index] << std::endl;
+    }
+  }
+}
+/*
+ * so basically
+ * since open is used in the opening of all nodes
+ * basically what happens is we arent getting all the binding
+ * that should be happening because we are only going over the
+ * current node then moving on, leaving other nodes unbound. 
+ * need to write it out to check if thats what it is ;(
+  */
 
 void Percolation::open(int x, int y) {
   Node* current = this->nodeArray[x][y];
+  int number = y * this->gridSize + x;
+  std::cout << "current node is: ";
+  std::cout << this->nodeArray[x][y]->number << std::endl;
+  if(this->nodeArray[x][y]->number != number) {
+    std::cout << "HUGE ERROR FIX PLS" << std::endl;
+  }
+  
+  if(!current->isOpen) {
+    current->isOpen = true;
+  }
   Node* up =  nullptr;
   if(y < this->gridSize-1) {
     up = this->nodeArray[x][y+1];
@@ -156,27 +185,33 @@ void Percolation::open(int x, int y) {
     left = nullptr;
   }
 
-  if(!current->isOpen) {
-    current->isOpen = true;
-  }
   if(up) {
     if(up->isOpen) {
-      this->checker->unioner(up->xyCord.first,up->xyCord.second);
+      //wtf is this logic lol :D i cri
+      std::cout << "up->number: " << up->number << std::endl;
+      std::cout << "current->number: " << current->number << std::endl;
+      this->checker->unioner(up->number, current->number);
     }
   }
   if(down) {
     if(down->isOpen) {
-      this->checker->unioner(down->xyCord.first,down->xyCord.second);
+      std::cout << "down->number: " << down->number << std::endl;
+      std::cout << "current->number: " << current->number << std::endl;
+      this->checker->unioner(down->number, current->number);
     }
   }
   if(right) {
     if(right->isOpen) {
-      this->checker->unioner(right->xyCord.first,right->xyCord.second);
+      std::cout << "right->number: " << right->number << std::endl;
+      std::cout << "current->number: " << current->number << std::endl;
+      this->checker->unioner(right->number, current->number);
     }
   }
   if(left) {
     if(left->isOpen) {
-      this->checker->unioner(left->xyCord.first,left->xyCord.second);
+      std::cout << "left->number: " << left->number << std::endl;
+      std::cout << "current->number: " << current->number << std::endl;
+      this->checker->unioner(left->number, current->number);
     }
   }
 }
@@ -231,7 +266,7 @@ void Percolation::nodeOpenChance(float percent) {
   for(int y = 0; y < this->gridSize; y++) {
     for(int x = 0; x < this->gridSize; x++) {
       if(chance(percent)) {
-        std::cout << "opening node" <<
+        std::cout << "opening node: " <<
           this->nodeArray[x][y]->number <<
           std::endl;
         this->open(x,y);
@@ -242,11 +277,8 @@ void Percolation::nodeOpenChance(float percent) {
 
 int main() {
   Percolation test(5);
-  test.testPrintOpenSiteNum();
-  test.nodeOpenChance(.70);
-  test.testPrintOpenSiteNum();
-  test.testPrintGrid();
-  test.testIdArray();
-  test.percolates();
+  //test.testNumberIdPair();
+  test.nodeOpenChance(.91);
+  //test.testNumberIdPair();
   return 0;
 }
