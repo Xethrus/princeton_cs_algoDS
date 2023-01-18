@@ -25,7 +25,7 @@ public:
         Node* newNode = new Node();
         nodeArray[x][y] = newNode;
         newNode->xyCord = std::make_pair(x,y);  
-        if(x == 0) {
+        if(y == 0) {
           topNodes.push_back(newNode);
           //std::cout << newNode->xyCord.first << " and " <<
           //  newNode->xyCord.second << std::endl;
@@ -240,12 +240,12 @@ bool Percolation::percolates() {
   int sizeOfCurrent = this->checker->arraySize;
   for(int y = 0; y < this->topNodes.size(); y++) {
     for(int x = 0; x < this->bottomNodes.size(); x++) {
-      std::cout << "top Node id: ";
-      std::cout << this->checker->id[this->topNodes[y]->
-          number] << std::endl;
-      std::cout << "bottom Node id: ";
-      std::cout << this->checker->id[this->bottomNodes[x]->
-          number] << std::endl;
+      //std::cout << "top Node id: ";
+      //std::cout << this->checker->id[this->topNodes[y]->
+      //    number] << std::endl;
+      //std::cout << "bottom Node id: ";
+      //std::cout << this->checker->id[this->bottomNodes[x]->
+      //   number] << std::endl;
       if(this->checker->id[this->topNodes[y]->number] ==
          this->checker->id[this->bottomNodes[x]->number]) {
         std::cout << "yay" << std::endl;
@@ -266,9 +266,9 @@ void Percolation::nodeOpenChance(float percent) {
   for(int y = 0; y < this->gridSize; y++) {
     for(int x = 0; x < this->gridSize; x++) {
       if(chance(percent)) {
-        std::cout << "opening node: " <<
-          this->nodeArray[x][y]->number <<
-          std::endl;
+       // std::cout << "opening node: " <<
+       //   this->nodeArray[x][y]->number <<
+       //   std::endl;
         this->open(x,y);
       }
     }
@@ -278,7 +278,11 @@ void Percolation::nodeOpenChance(float percent) {
 int main() {
   Percolation test(5);
   //test.testNumberIdPair();
-  test.nodeOpenChance(.91);
-  //test.testNumberIdPair();
+  test.nodeOpenChance(.90);
+
+  test.percolates();
+  
+  test.testPrintOpenSiteNum();
+
   return 0;
 }
