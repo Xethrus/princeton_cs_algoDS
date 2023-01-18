@@ -45,7 +45,7 @@ public:
   bool isOpen(int, int);
   int openSites();
   bool percolates();
-  void nodeOpenChance(float);
+  void nodeOpenChance(int);
   //test funcs
   void testIdArray();
   void testNodeArrayTopAndBottom();
@@ -151,8 +151,8 @@ void Percolation::testNumberIdPair() {
 void Percolation::open(int x, int y) {
   Node* current = this->nodeArray[x][y];
   int number = y * this->gridSize + x;
-  std::cout << "current node is: ";
-  std::cout << this->nodeArray[x][y]->number << std::endl;
+//  std::cout << "current node is: ";
+// std::cout << this->nodeArray[x][y]->number << std::endl;
   if(this->nodeArray[x][y]->number != number) {
     std::cout << "HUGE ERROR FIX PLS" << std::endl;
   }
@@ -188,29 +188,29 @@ void Percolation::open(int x, int y) {
   if(up) {
     if(up->isOpen) {
       //wtf is this logic lol :D i cri
-      std::cout << "up->number: " << up->number << std::endl;
-      std::cout << "current->number: " << current->number << std::endl;
+      //std::cout << "up->number: " << up->number << std::endl;
+      //std::cout << "current->number: " << current->number << std::endl;
       this->checker->unioner(up->number, current->number);
     }
   }
   if(down) {
     if(down->isOpen) {
-      std::cout << "down->number: " << down->number << std::endl;
-      std::cout << "current->number: " << current->number << std::endl;
+      //std::cout << "down->number: " << down->number << std::endl;
+      //std::cout << "current->number: " << current->number << std::endl;
       this->checker->unioner(down->number, current->number);
     }
   }
   if(right) {
     if(right->isOpen) {
-      std::cout << "right->number: " << right->number << std::endl;
-      std::cout << "current->number: " << current->number << std::endl;
+      //std::cout << "right->number: " << right->number << std::endl;
+      //std::cout << "current->number: " << current->number << std::endl;
       this->checker->unioner(right->number, current->number);
     }
   }
   if(left) {
     if(left->isOpen) {
-      std::cout << "left->number: " << left->number << std::endl;
-      std::cout << "current->number: " << current->number << std::endl;
+      //std::cout << "left->number: " << left->number << std::endl;
+      //std::cout << "current->number: " << current->number << std::endl;
       this->checker->unioner(left->number, current->number);
     }
   }
@@ -259,10 +259,11 @@ bool Percolation::percolates() {
 bool chance(float percent) {
   std::random_device rd;
   std::mt19937 gen(rd());
-  std::uniform_int_distribution<> dis(0,1);
+  std::uniform_int_distribution<> dis(0,100);
+//  std::cout << dis(gen) << std::endl;
   return dis(gen) <= percent;
 }
-void Percolation::nodeOpenChance(float percent) {
+void Percolation::nodeOpenChance(int percent) {
   for(int y = 0; y < this->gridSize; y++) {
     for(int x = 0; x < this->gridSize; x++) {
       if(chance(percent)) {
@@ -276,13 +277,12 @@ void Percolation::nodeOpenChance(float percent) {
 }
 
 int main() {
-  Percolation test(5);
+  Percolation test(100);
   //test.testNumberIdPair();
-  test.nodeOpenChance(.90);
-
+  test.nodeOpenChance(70);
   test.percolates();
+  test.testPrintGrid();
   
-  test.testPrintOpenSiteNum();
 
   return 0;
 }
