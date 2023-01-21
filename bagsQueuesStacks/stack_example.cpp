@@ -39,9 +39,9 @@ void Stack::push(std::string info) {
 }
 
 std::string Stack::pop() {
-  Node* returnVal = this->top;
+  std::string ref = this->top->info;
   this->top = this->top->next;
-  return returnVal->info;
+  return ref;
 }
 
 bool Stack::isEmpty() {
