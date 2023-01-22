@@ -31,22 +31,41 @@ public:
     top = nullptr;
     bottom = nullptr;
   }
-
+  Node<Item>* getTop() { return this->top; }
   bool isEmpty();
   int getSize();
   void pushFirst(Item);
   void pushLast(Item);
   Item popFirst();
   Item popLast();
-  void increaseSize();
   //test 
   void testFuctionality();
+  
+  //iterator class
+  class DequeIter {
+  public:
+    Node<Item>* cursor; 
+
+    DequeIter(Deque<Item> object) {
+      if(!object.isEmpty()) {
+        cursor = object.getTop();
+      } 
+    }
+    
+    Item operator*() const {
+      return this->cursor->data;
+    }
+    Node<Item>* operator++() const {
+      this->cursor = this->cursor->next;
+      return this->cursor;
+    }
+    Node<Item>* operator--() const {
+      this->cursor = this->cursor->prev;
+      return this->cursor;
+    }
+  };
 };
 
-template <typename Item>
-void Deque<Item>::increaseSize() {
-  this->totalSize = this->totalSize + 1;
-}
 
 template <typename Item>
 void Deque<Item>::testFuctionality() {
@@ -100,6 +119,7 @@ void Deque<Item>::pushFirst(Item data) {
   if(this->isEmpty()) {
     this->top = newNode;
     this->bottom = newNode;
+    DequeIter* iter = new DequeIter(this);
     return;
   }
   Node<Item>* ref = this->top;
@@ -117,6 +137,7 @@ void Deque<Item>::pushLast(Item data) {
   if(this->isEmpty()) {
     this->bottom = newNode;
     this->top = newNode;
+    DequeIter* iter = new DequeIter(this);
     return;
   }
   this->bottom->next = newNode;
@@ -164,4 +185,4 @@ int main() {
   test.pushFirst("hi");
   test.testFuctionality();
   return 0;
-}
+};
