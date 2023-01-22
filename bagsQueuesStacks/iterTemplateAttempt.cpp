@@ -5,8 +5,6 @@
 template <typename T>
 class Deque {
 private:
-  Node* _front;
-  Node* _back;
   struct Node {
     Node* next;
     Node* prev;
@@ -15,12 +13,19 @@ private:
       data = info;
       next = nullptr;
     }
-  }
+  };
+  Node* _back;
+  Node* _front;
 public:
+  Deque() {
+    _front = nullptr;
+    _back = nullptr;
+  }
   class Iter {
   public:
+    Node* node;
     Iter(Node* node) {
-      Node(node);
+      node(node);
     }
     T& operator*() {
       return node->data;
@@ -43,7 +48,7 @@ public:
       return Iter(nullptr); 
     }
   };
-  void pushFront(cont T& value) {
+  void pushFront(const T& value) {
     Node* newNode = new Node(value);
     if(this->_front == nullptr) {
       this->_front = newNode;
@@ -89,3 +94,22 @@ public:
   }
 };
 
+
+int main() {
+  Deque<int> test;
+  test.pushFront(1);
+  test.pushFront(1);
+  test.pushFront(1);
+  test.pushFront(1);
+  test.pushFront(1);
+  std::cout << test.popFront() << std::endl;
+  std::cout << test.popFront() << std::endl;
+  std::cout << test.popFront() << std::endl;
+  std::cout << test.popFront() << std::endl;
+  std::cout << test.popFront() << std::endl;
+  std::cout << test.popFront() << std::endl;
+  std::cout << test.popFront() << std::endl;
+  std::cout << test.popFront() << std::endl;
+  std::cout << test.popFront() << std::endl;
+  return 0;
+}
